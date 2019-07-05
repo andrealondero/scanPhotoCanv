@@ -1,1 +1,1 @@
-# scanPhotoCanv
+# Scanner
