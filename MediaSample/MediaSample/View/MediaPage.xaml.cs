@@ -48,22 +48,12 @@ namespace MediaSample
 				}
 				else if (image.Source != null)
 				{
-					imageAdded1.Source = ImageSource.FromStream(() =>
+					image1.Source = ImageSource.FromStream(() =>
 					{
 						var stream = file.GetStream();
 						file.Dispose();
 						return stream;
 					});
-				}
-				else if (image.Source != null && imageAdded1.Source != null)
-				{
-					imageAdded2.Source = ImageSource.FromStream(() =>
-					{
-						var stream = file.GetStream();
-						file.Dispose();
-						return stream;
-					});
-					pickPhoto.IsVisible = false;
 				}
 			};
 
@@ -81,15 +71,76 @@ namespace MediaSample
 				if (file == null)
 					return;
 
-				image.Source = ImageSource.FromStream(() =>
-				{
-					var stream = file.GetStream();
-					file.Dispose();
-					return stream;
-				});
-			};
+                if (imageAdded.Source == null)
+                {
+                    imageAdded.Source = ImageSource.FromStream(() =>
+                    {
+                        var stream = file.GetStream();
+                        file.Dispose();
+                        return stream;
+                    });
+                }
+                else if (imageAdded.Source != null)
+                {
+                    imageAdded1.Source = ImageSource.FromStream(() =>
+                    {
+                        var stream = file.GetStream();
+                        file.Dispose();
+                        return stream;
+                    });
+                }
+            };
 
-			takeCode.Clicked += async (sender, args) =>
+            del1.Clicked += (sender, args) => 
+            {
+                if (image.Source != null)
+                {
+                    DisplayAlert("ATTENZIONE", "togliere immagine (questa non verrà però eliminata dalla galleria)", "OK");
+                    image.Source = null;
+                }
+                else
+                {
+                    DisplayAlert("ATTENZIONE", "nessuna immagine da eliminare", "OK");
+                }
+            };
+            del2.Clicked += (sender, args) =>
+            {
+                if (image1.Source != null)
+                {
+                    DisplayAlert("ATTENZIONE", "togliere immagine (questa non verrà però eliminata dalla galleria)", "OK");
+                    image1.Source = null;
+                }
+                else
+                {
+                    DisplayAlert("ATTENZIONE", "nessuna immagine da eliminare", "OK");
+                }
+            };
+            del3.Clicked += (sender, args) =>
+            {
+                if (imageAdded.Source != null)
+                {
+                    DisplayAlert("ATTENZIONE", "togliere immagine (questa non verrà però eliminata dalla galleria)", "OK");
+                    imageAdded.Source = null;
+                }
+                else
+                {
+                    DisplayAlert("ATTENZIONE", "nessuna immagine da eliminare", "OK");
+                }
+            };
+            del4.Clicked += (sender, args) =>
+            {
+                if (imageAdded1.Source != null)
+                {
+                    DisplayAlert("ATTENZIONE", "togliere immagine (questa non verrà però eliminata dalla galleria)", "OK");
+                    imageAdded1.Source = null;
+                }
+                else
+                {
+                    DisplayAlert("ATTENZIONE", "nessuna immagine da eliminare", "OK");
+                }
+            };
+
+            takeCode.Clicked += async (sender, args) =>
 			{
 				var scanner = new ZXingScannerPage();
 				await Navigation.PushAsync(scanner);
