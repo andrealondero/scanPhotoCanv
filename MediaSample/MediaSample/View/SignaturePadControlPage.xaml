@@ -3,9 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:forms="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
              x:Class="MediaSample.View.SignaturePadControlPage">
-
-    <StackLayout>
+    
+    <ScrollView>
+        <Grid ColumnSpacing="1" RowSpacing="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
     <forms:SignaturePadView 
+        Grid.Row="0"
+        Grid.RowSpan="2"
+        Grid.Column="0"
+        Grid.ColumnSpan="3"
         x:Name="padView"
         BackgroundColor="White" 
         WidthRequest="250" 
@@ -13,11 +30,13 @@
         StrokeColor="Black" 
         StrokeWidth="3"
         PropertyChanged="PadView_PropertyChanged"
+        StrokeCompleted="PadView_StrokeCompleted"
         Cleared="PadView_Cleared" />
-
-        <!--Button Text="Salva" x:Name="btnSaveImage" Clicked="Save_Clicked"/-->
-        <Button Text="Salva vettoriale" x:Name="btnSave" Clicked="SaveVectorClicked" />
-        <Button Text="Carica vettoriale" x:Name="btnLoad" Clicked="LoadVectorClicked" />
-        
-    </StackLayout>
+            <Button Grid.Row="2" Grid.Column="0" Text="Salva immagine" x:Name="btnSaveImage" Clicked="Save_Clicked" IsEnabled="False"/>
+            <Button Grid.Row="2" Grid.Column="1" Text="Salva vettoriale" x:Name="btnSave" Clicked="SaveVectorClicked" IsEnabled="False"/>
+            <Button Grid.Row="2" Grid.Column="2" Text="Carica vettoriale" x:Name="btnLoad" Clicked="LoadVectorClicked" IsVisible="False"/>
+            <Image Margin="10" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" x:Name="img_result" />
+        </Grid>
+    </ScrollView>
+    
 </ContentPage>

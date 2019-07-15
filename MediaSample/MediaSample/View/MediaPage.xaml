@@ -37,7 +37,7 @@
         <Button Grid.Row="4" Grid.Column="3" x:Name="del4" Text="-"/>
 
         <Label Grid.Row="5" Grid.Column="0" Text="Firma" TextColor="White" FontSize="Medium" VerticalOptions="Center"/>
-		<Image Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" x:Name="imageFirma"/>
+        <Image Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" x:Name="imageFirma" Source="{Binding SignImage}"/>
 
 		<Button Grid.Row="7" Grid.Column="0" x:Name="takeCode" Text="Scan"/>
             <Button Grid.Row="7" Grid.Column="1" x:Name="takePhoto" Text="Foto"/>

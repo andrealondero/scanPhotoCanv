@@ -17,45 +17,49 @@ namespace MediaSample.View
             InitializeComponent();
         }
 
-        /*private async void Save_Clicked(object sender, EventArgs e)
+        private async void Save_Clicked(object sender, EventArgs e)
         {
-            bool saved;
-            using (var bitmap = await padView.GetImageStreamAsync(SignatureImageFormat.Png, Color.Black, Color.White, 1f))
+            var imageStream = await padView.GetImageStreamAsync(SignatureImageFormat.Png);
+
+            // this is actually memory-stream so convertible to it
+            var mstream = (MemoryStream)imageStream;
+
+            //Unfortunately above mstream is not valid until you take it as byte array
+            //mstream = new MemoryStream(mstream.ToArray());
+
+            //Now you can
+            img_result.Source = ImageSource.FromStream(() =>
             {
-                saved = await App.SaveSignature(bitmap, "signature.png");
-            }
-
-            if (saved)
-                await DisplayAlert("Signature Pad", "Raster signature saved to the photo library.", "OK");
-            else
-                await DisplayAlert("Signature Pad", "There was an error saving the signature.", "OK");
+                var file = new MemoryStream(mstream.ToArray());
+                mstream.Dispose();
+                return file;
+            });
+            padView.StrokeColor = Color.Transparent;
         }
-        /*{
-        Stream image = await padView.GetImageStreamAsync(SignatureImageFormat.Jpeg);
-
-        await Navigation.PopAsync();
-    }*/
 
         private async void SaveVectorClicked(object sender, EventArgs e)
         {
             points = padView.Points.ToArray();
-            await DisplayAlert("Signature Pad", "Vector signature saved to memory.", "OK");
+            await DisplayAlert("Conferma firma", "Firma vettoriale salvata.", "OK");
+            btnLoad.IsVisible = true;
         }
 
         private void LoadVectorClicked(object sender, EventArgs e)
         {
-            padView.Points = points;
+                padView.Points = points;
         }
 
         private void PadView_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (padView.IsBlank)
             {
+                btnSaveImage.IsEnabled = false;
                 btnSave.IsEnabled = false;
                 btnLoad.IsEnabled = false;
             }
             else if (!padView.IsBlank)
             {
+                btnSaveImage.IsEnabled = true;
                 btnSave.IsEnabled = true;
                 btnLoad.IsEnabled = true;
             }
@@ -64,6 +68,14 @@ namespace MediaSample.View
         private void PadView_Cleared(object sender, EventArgs e)
         {
             DisplayAlert("ATTENZIONE", "Per recuperare la firma cancellata premere il campo firma e poi CARICA VETTORIALE", "OK");
+            padView.StrokeColor = Color.Black;
+        }
+
+        private void PadView_StrokeCompleted(object sender, EventArgs e)
+        {
+            btnSaveImage.IsEnabled = true;
+            btnSave.IsEnabled = true;
+            btnLoad.IsEnabled = true;
         }
     }
 }
